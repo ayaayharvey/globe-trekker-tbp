@@ -1,0 +1,83 @@
+[
+  {
+    "id": 1,
+    "name": "Kenya Savannah Safari Beach",
+    "description": "Enjoy the beauty of the Kenyan savannah, relax on pristine beaches, and witness the incredible wildlife of the region. Perfect for adventure seekers and nature lovers.",
+    "image": "src/resources/images/beach.jpg",
+    "location": "Diani Beach, Kenya",
+    "pricePerNight": 180,
+    "rating": 4.8,
+    "amenities": [
+      "All-inclusive meals",
+      "Guided safari tours",
+      "Beachfront access",
+      "Free airport shuttle",
+      "Swimming pool",
+      "Wi-Fi"
+    ],
+    "availableDates": ["2024-07-01", "2024-07-15", "2024-08-01", "2024-08-15"],
+    "stayDays": 6,
+    "stayNights": 5,
+    "highlights": ["Big Five Safari", "Sunset beach dinners", "Maasai cultural experience"]
+  },
+  {
+    "id": 2,
+    "name": "New York City",
+    "description": "Experience the vibrant energy of New York City, from iconic landmarks like Times Square and Central Park to world-class dining, shopping, and entertainment. Ideal for urban explorers and culture enthusiasts.",
+    "image": "src/resources/images/city.jpg",
+    "location": "Manhattan, New York, USA",
+    "pricePerNight": 250,
+    "rating": 4.7,
+    "amenities": [
+      "Central location",
+      "Breakfast included",
+      "Fitness center",
+      "Concierge service",
+      "Free Wi-Fi"
+    ],
+    "availableDates": ["2024-06-20", "2024-07-10", "2024-08-05", "2024-09-01"],
+    "stayDays": 4,
+    "stayNights": 3,
+    "highlights": ["Broadway show tickets", "Statue of Liberty tour", "Rooftop dinner experience"]
+  },
+  {
+    "id": 3,
+    "name": "Mount Everest Base Camp Adventure",
+    "description": "Embark on a once-in-a-lifetime trek to Mount Everest Base Camp. Experience the breathtaking beauty of the Himalayas, local Sherpa culture, and the thrill of high-altitude adventure.",
+    "image": "src/resources/images/mountain.jpg",
+    "location": "Khumbu Region, Nepal",
+    "pricePerNight": 120,
+    "rating": 4.9,
+    "amenities": [
+      "Guided trekking",
+      "All meals included",
+      "Mountain lodge stays",
+      "Porter service",
+      "Medical support"
+    ],
+    "availableDates": ["2024-09-10", "2024-10-05", "2024-10-20", "2024-11-01"],
+    "stayDays": 14,
+    "stayNights": 13,
+    "highlights": ["Scenic helicopter ride", "Visit to Namche Bazaar", "Panoramic Himalayan views"]
+  },
+  {
+    "id": 4,
+    "name": "Mount Everest Summit Expedition",
+    "description": "Challenge yourself with a guided expedition to the summit of Mount Everest. Includes acclimatization, expert guides, and all logistics for a safe and memorable climb.",
+    "image": "src/resources/images/mountain.jpg",
+    "location": "Mount Everest, Nepal",
+    "pricePerNight": 900,
+    "rating": 5,
+    "amenities": [
+      "Professional climbing guides",
+      "Base camp accommodation",
+      "All meals and oxygen included",
+      "Safety equipment",
+      "Helicopter evacuation insurance"
+    ],
+    "availableDates": ["2025-04-01", "2025-05-01"],
+    "stayDays": 60,
+    "stayNights": 59,
+    "highlights": ["Summit attempt", "Khumbu Icefall crossing", "Everest Base Camp experience"]
+  }
+]

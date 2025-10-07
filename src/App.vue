@@ -1,7 +1,7 @@
-<script setup></script>
+<script setup>
+import MainLayout from '@/layouts/MainLayout.vue'
+</script>
 
 <template>
-  <p>HELLO WORLD</p>
+  <MainLayout />
 </template>
-
-<style scoped></style>
