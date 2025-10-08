@@ -49,11 +49,6 @@
               Bookings
             </router-link>
           </li>
-          <li>
-            <a href="#footer" class="text-body hover:text-primary font-medium transition-colors"
-              >Contact</a
-            >
-          </li>
         </ul>
       </nav>
     </div>
