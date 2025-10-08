@@ -38,9 +38,16 @@
           </li>
 
           <li>
-            <a href="#booking" class="text-body hover:text-primary font-medium transition-colors"
-              >Bookings</a
+            <router-link
+              to="/bookings"
+              class="hover:text-primary font-medium transition-colors"
+              :class="{
+                'text-primary underline decoration-secondary underline-offset-4':
+                  $route.path === '/bookings',
+              }"
             >
+              Bookings
+            </router-link>
           </li>
           <li>
             <a href="#footer" class="text-body hover:text-primary font-medium transition-colors"
