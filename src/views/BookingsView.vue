@@ -3,11 +3,14 @@ import axios from 'axios'
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BookingDialog from '@/components/BookingDialog.vue'
+import BookingCard from '@/components/BookingCard.vue'
 import { useDestinationsStore } from '@/stores/destinations'
+import { useBookingsStore } from '@/stores/bookings'
 
 const storeDestination = useDestinationsStore()
+const storeBooking = useBookingsStore()
+
 // const destinations = ref([])
-const filterDestination = ref('all')
 const loading = ref(false)
 const error = ref('')
 const selected = ref(null)
@@ -60,11 +63,8 @@ watch(
   },
 )
 
-const myItems = computed(() => {
-  let items =
-    filterDestination.value == 'all'
-      ? storeDestination?.getDestination
-      : storeDestination?.getFavorites
+const bookingList = computed(() => {
+  let items = storeBooking.bookings.slice().reverse()
   return items
 })
 </script>
@@ -81,58 +81,37 @@ const myItems = computed(() => {
           Create New Booking
         </button>
       </div>
-      <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">Loading</div>
-      <div v-else-if="myItems.length < 1">
+      <div v-if="loading" class="grid gap-8">
+        <div
+          class="bg-white rounded-xl border border-white shadow-md overflow-hidden flex flex-col p-6 mb-4 animate-pulse"
+        >
+          <div class="h-6 bg-gray-200 rounded w-2/3 mb-4"></div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="flex flex-col gap-y-2">
+              <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/3"></div>
+            </div>
+            <div class="flex flex-col gap-y-2">
+              <div class="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/3 mb-2"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+            </div>
+          </div>
+          <div class="flex justify-end mt-4 gap-2">
+            <div class="h-8 w-32 bg-gray-200 rounded"></div>
+            <div class="h-8 w-20 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="bookingList.length < 1">
         <div class="px-3 py-10">No items found.</div>
       </div>
       <div v-else class="">
-        <div
-          v-for="booking in myItems"
-          :key="booking.id"
-          class="bg-white rounded-xl border border-white shadow-md overflow-hidden flex flex-col p-6 mb-4"
-        >
-          <h3 class="text-xl font-semibold text-primary mb-2 flex items-center gap-2">
-            {{ booking.destinationName || booking.name }}
-          </h3>
-          <div class="grid gap-2">
-            <div class="text-sm text-body" v-if="booking.location">
-              <span class="font-semibold">Location:</span> {{ booking.location }}
-            </div>
-            <div class="text-sm text-body" v-if="booking.pricePerNight">
-              <span class="font-semibold">Price/Night:</span> ${{ booking.pricePerNight }}
-            </div>
-            <div class="text-sm text-body" v-if="booking.rating">
-              <span class="font-semibold">Rating:</span> {{ booking.rating }}
-            </div>
-            <div class="text-sm text-body" v-if="booking.stayDays && booking.stayNights">
-              <span class="font-semibold">Duration:</span> {{ booking.stayDays }} days /
-              {{ booking.stayNights }} nights
-            </div>
-          </div>
-          <div class="text-body text-sm mb-2" v-if="booking.status">
-            <span class="font-semibold">Status:</span>
-            <span
-              :class="{
-                'text-green-600 font-bold': booking.status === 'Confirmed',
-                'text-yellow-600 font-bold': booking.status === 'Pending',
-                'text-red-600 font-bold': booking.status === 'Cancelled',
-              }"
-            >
-              {{ booking.status }}
-            </span>
-          </div>
-          <div class="flex justify-end mt-4 gap-2">
-            <button
-              class="px-4 py-2 rounded bg-secondary text-white text-sm font-semibold hover:bg-primary transition"
-            >
-              View Details
-            </button>
-            <button
-              class="px-4 py-2 rounded bg-gray-200 text-body text-sm font-semibold hover:bg-gray-300 transition"
-            >
-              Cancel
-            </button>
-          </div>
+        <div v-for="booking in bookingList" :key="booking.id">
+          <BookingCard :booking="booking" />
         </div>
       </div>
     </div>

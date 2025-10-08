@@ -1,8 +1,11 @@
 <script setup>
 import { ref } from 'vue'
 import { useDestinationsStore } from '@/stores/destinations'
+import { useBookingsStore } from '@/stores/bookings'
+import { format } from 'date-fns'
 
 const storeDestination = useDestinationsStore()
+const storeBooking = useBookingsStore()
 
 const props = defineProps({
   inDialog: {
@@ -11,9 +14,10 @@ const props = defineProps({
 })
 
 const form = ref({
-  from: '',
-  to: '',
-  date: '',
+  name: '',
+  email: '',
+  destination: null,
+  schedule: null,
   guests: 1,
 })
 
@@ -21,9 +25,18 @@ const emit = defineEmits(['close'])
 const closeDialog = () => {
   emit('close')
 }
-
 const submitBooking = () => {
-  console.log('Booking submitted:', { ...form.value })
+  storeBooking.addBooking(form.value)
+  alert(
+    'Thank you, ' +
+      form.value?.name +
+      '! Your booking to ' +
+      form.value?.destination?.name +
+      ' is confirmed for ' +
+      format(new Date(form.value?.schedule), 'MMMM dd, yyyy') +
+      '.',
+  )
+  closeDialog()
 }
 </script>
 
@@ -52,20 +65,18 @@ const submitBooking = () => {
           required
         />
       </div>
-      <!-- <div>
-          <label for="from" class="block text-sm font-medium text-body mb-1">From</label>
-          <select
-            id="from"
-            v-model="form.from"
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition text-body bg-background"
-            required
-          >
-            <option value="" disabled selected>Select departure airport</option>
-            <option v-for="airport in departureAirports" :key="airport.code" :value="airport.code">
-              {{ airport.name }}
-            </option>
-          </select>
-        </div> -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-body mb-1">Email</label>
+        <input
+          id="email"
+          v-model="form.email"
+          type="email"
+          class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition text-body bg-background"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+
       <div>
         <label for="destination" class="block text-sm font-medium text-body mb-1">
           Destination
@@ -82,6 +93,38 @@ const submitBooking = () => {
           </option>
         </select>
       </div>
+
+      <div
+        v-if="form.destination"
+        class="border border-primary rounded-lg bg-blue-50 p-4 mb-2 text-xs"
+        style="margin-top: -0.5rem"
+      >
+        <div class="font-semibold text-primary mb-1">{{ form.destination.name }}</div>
+        <div class="text-body mb-1" v-if="form.destination.description">
+          {{ form.destination.description }}
+        </div>
+        <ul class="list-none p-0 m-0 space-y-1 grid grid-cols-2 mt-2">
+          <li v-if="form.destination.location">
+            <span class="font-medium text-secondary">Location: </span>
+            <span class="font-semibold"> {{ form.destination.location }}</span>
+          </li>
+          <li v-if="form.destination.pricePerNight">
+            <span class="font-medium text-secondary">Amount: </span>
+            <span class="font-semibold"> ${{ form.destination.pricePerNight }}</span>
+          </li>
+          <li v-if="form.destination.stayDays && form.destination.stayNights">
+            <span class="font-medium text-secondary">Duration: </span>
+            <span class="font-semibold">
+              {{ form.destination.stayDays }} days / {{ form.destination.stayNights }} nights</span
+            >
+          </li>
+          <li v-if="form.destination.rating">
+            <span class="font-medium text-secondary">Rating: </span>
+            <span class="font-semibold"> {{ form.destination.rating }}</span>
+          </li>
+        </ul>
+      </div>
+
       <div>
         <label for="schedule" class="block text-sm font-medium text-body mb-1"> Schedule </label>
         <select
@@ -102,17 +145,7 @@ const submitBooking = () => {
           </option>
         </select>
       </div>
-      <!-- <div>
-          <label for="date" class="block text-sm font-medium text-body mb-1">Date</label>
-          <input
-            id="date"
-            v-model="form.date"
-            type="date"
-            :min="minBookingDate"
-            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition text-body bg-background"
-            required
-          />
-        </div> -->
+
       <div>
         <label for="guests" class="block text-sm font-medium text-body mb-1">Guests</label>
         <select
@@ -124,6 +157,7 @@ const submitBooking = () => {
           <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
         </select>
       </div>
+
       <div class="pt-2">
         <button
           type="submit"
