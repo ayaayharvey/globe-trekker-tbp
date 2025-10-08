@@ -45,7 +45,8 @@ const submitBooking = () => {
       form.value?.destination?.name +
       ' is confirmed for ' +
       format(new Date(form.value?.schedule), 'MMMM dd, yyyy') +
-      '.',
+      '.' +
+      (props.inDialog ? '' : ' You can check the details in the Bookings page.'),
   )
   closeDialog()
 }
@@ -64,7 +65,9 @@ watch(
 </script>
 
 <template>
-  <div class="relative max-w-lg mx-auto bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+  <div
+    class="relative max-w-lg mx-auto max-h-full overflow-y-auto bg-white rounded-2xl shadow-xl p-8 border border-gray-100"
+  >
     <!-- Close Button -->
     <button
       v-if="props.inDialog"
