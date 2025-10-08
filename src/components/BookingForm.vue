@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { useDestinationsStore } from '@/stores/destinations'
 import { useBookingsStore } from '@/stores/bookings'
 import { format } from 'date-fns'
@@ -38,6 +38,20 @@ const submitBooking = () => {
   )
   closeDialog()
 }
+
+watch(
+  () => storeDestination.selected,
+  async (newDest) => {
+    if (!newDest) {
+      form.value.destination = null
+      return
+    }
+    const match = storeDestination.getDestination.find((d) => d.id === newDest.id)
+    await nextTick()
+    form.value.destination = match || null
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -81,13 +95,14 @@ const submitBooking = () => {
         <label for="destination" class="block text-sm font-medium text-body mb-1">
           Destination
         </label>
+
         <select
           id="destination"
           v-model="form.destination"
           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition text-body bg-background"
           required
         >
-          <option value="" disabled selected>Select destination</option>
+          <option value="" disabled>Select destination</option>
           <option v-for="d in storeDestination.getDestination" :key="d.id" :value="d">
             {{ d.name }}
           </option>
@@ -133,7 +148,7 @@ const submitBooking = () => {
           class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition text-body bg-background"
           required
         >
-          <option value="" disabled selected>Select schedule</option>
+          <option value="" disabled>Select schedule</option>
           <option v-for="d in form.destination?.availableDates" :key="d" :value="d">
             {{
               new Date(d).toLocaleDateString('en-US', {

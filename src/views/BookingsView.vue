@@ -22,6 +22,10 @@ const router = useRouter()
 
 onMounted(async () => {
   loading.value = true
+
+  if (storeDestination.selected?.id) {
+    bookingDialog.value = true
+  }
   try {
     const res = await axios.get('/src/data/destinations.json', {
       headers: { 'Cache-Control': 'no-cache' },

@@ -1,7 +1,9 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { format } from 'date-fns'
+import { useDestinationsStore } from '@/stores/destinations'
 
+const storeDestination = useDestinationsStore()
 const props = defineProps({
   destination: {
     type: Object,
@@ -15,6 +17,14 @@ const props = defineProps({
 defineEmits(['close'])
 
 const hasImage = computed(() => !!props.destination && !!props.destination.image)
+
+watch(
+  () => props.destination,
+  (newDest) => {
+    storeDestination.selected = newDest
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -96,13 +106,18 @@ const hasImage = computed(() => !!props.destination && !!props.destination.image
       </div>
 
       <div class="relative shrink-0 min-h-15 flex items-center justify-center bg-gray-100">
-        <button
-          class="px-3 py-1 rounded bg-secondary text-white text-sm"
-          @click="$emit('close')"
-          aria-label="Close"
+        <router-link
+          to="/bookings"
+          class="hover:text-primary font-medium transition-colors"
+          :class="{
+            'text-primary underline decoration-secondary underline-offset-4':
+              $route.path === '/bookings',
+          }"
         >
-          Proceed to Booking
-        </button>
+          <button class="px-3 py-1 rounded bg-secondary text-white text-sm">
+            Proceed to Booking
+          </button>
+        </router-link>
       </div>
     </div>
   </div>

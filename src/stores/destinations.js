@@ -5,6 +5,7 @@ export const useDestinationsStore = defineStore('destinations', {
     destinations: [],
     favorites: [],
     featured: [],
+    selected: null,
   }),
   getters: {
     getDestination(state) {
