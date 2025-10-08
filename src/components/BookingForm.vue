@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch } from 'vue'
 import { useDestinationsStore } from '@/stores/destinations'
 import { useBookingsStore } from '@/stores/bookings'
 import { format } from 'date-fns'
@@ -41,14 +41,12 @@ const submitBooking = () => {
 
 watch(
   () => storeDestination.selected,
-  async (newDest) => {
-    if (!newDest) {
-      form.value.destination = null
-      return
-    }
-    const match = storeDestination.getDestination.find((d) => d.id === newDest.id)
-    await nextTick()
-    form.value.destination = match || null
+  (newDest) => {
+    setTimeout(() => {
+      if (storeDestination.selected && storeDestination.selected?.id) {
+        form.value.destination = newDest
+      }
+    }, 1000)
   },
   { immediate: true },
 )
