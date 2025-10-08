@@ -21,9 +21,20 @@ const form = ref({
   guests: 1,
 })
 
+const resetForm = () => {
+  form.value = {
+    name: '',
+    email: '',
+    destination: null,
+    schedule: null,
+    guests: 1,
+  }
+}
+
 const emit = defineEmits(['close'])
 const closeDialog = () => {
   emit('close')
+  resetForm()
 }
 const submitBooking = () => {
   storeBooking.addBooking(form.value)
